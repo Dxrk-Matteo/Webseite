@@ -5,60 +5,43 @@ const host = 'localhost';
 const port = 8000;
 
 const requestListener = function (req, res) {
-    console.log(req.url)
-    var contentType = "text/html"
-    var fileName = __dirname + "/Seawolvesguide.html"
-    if (req.url === "/home/matteo/Webseite/Basketball.png") {
-        contentType = "image/jpeg"
-        fileName = "/home/matteo/Webseite/Basketball.png"
+    var fileName = __dirname + req.url
+    if(!req.url || req.url === "/" || req.url === "/Seawolvesguide") {
+        var fileName = __dirname + "/Seawolvesguide.html"
     }
-    else if (req.url === "/home/matteo/Webseite/bgb.jpg") {
-        contentType = "image/jpeg"
-        fileName = "/home/matteo/Webseite/bgb.jpg"
-    }
-    else if (req.url === "/home/matteo/Webseite/BBall.png") {
-        contentType = "image/png"
-        fileName = "/home/matteo/Webseite/BBall.png"
-    }
-    else if (req.url === "/Passen") {
-        contentType = "text/html"
-        fileName = __dirname + "/Passen.html"
-    }
-    else if (req.url === "/Dribbling") {
-        contentType = "text/html"
-        fileName = __dirname + "/Dribbling.html"
-    }
-    else if (req.url === "/Wurftechniken") {
-        contentType = "text/html"
-        fileName = __dirname + "/Wurftechniken.html"
-    }
-    else if (req.url === "/Regeln") {
-        contentType = "text/html"
-        fileName = __dirname + "/Regeln.html"
-    }
-    else if (req.url === "/Kommandos") {
-        contentType = "text/html"
-        fileName = __dirname + "/Kommandos.html"
-    }
+    console.log(fileName)
+    fs.access(fileName)
+        .then(function () {
 
-    else if (req.url === "/Style.css") {
-        contentType = "text/css"
-        fileName = __dirname + "/Style.css"
-        console.log ("Hier")
-    }
-    fs.readFile(fileName)
-        .then(contents => {
-            res.setHeader("Content-Type", contentType);
-            res.writeHead(200);
-            res.end(contents);
+            
+            var contentType = "text/html"
+            if (req.url.endsWith(".png")) {
+                contentType = "image/png"
+            }
+            else if (req.url.endsWith(".jpg")) {
+                contentType = "image/jpeg"
+            }
+            else if (req.url.endsWith(".css")) {
+                contentType = "text/css"
+            }
+            
+            fs.readFile(fileName)
+                .then(contents => {
+                    res.setHeader("Content-Type", contentType);
+                    res.writeHead(200);
+                    res.end(contents);
+                })
+                .catch(err => {
+                    console.log(err)
+                    res.writeHead(500);
+                    res.end(err);
+                    return;
+                })
+            
         })
-        .catch(err => {
-            res.writeHead(500);
-            res.end(err);
-            return;
+        .catch(function () {
         })
 }
-
 
 
 const server = http.createServer(requestListener);
