@@ -24,9 +24,17 @@ const requestListener = function (req, res) {
         contentType = "text/html"
         fileName = __dirname + "/Passen.html"
     }
-    else if (req.url === "/home") {
+    else if (req.url === "/Dribbling") {
         contentType = "text/html"
-        fileName = __dirname + "/Seawolvesguide.html"
+        fileName = __dirname + "/Dribbling.html"
+    }
+    else if (req.url === "/Wurftechniken") {
+        contentType = "text/html"
+        fileName = __dirname + "/Wurftechniken.html"
+    }
+    else if (req.url === "/Regeln") {
+        contentType = "text/html"
+        fileName = __dirname + "/Regeln.html"
     }
     fs.readFile(fileName)
         .then(contents => {
