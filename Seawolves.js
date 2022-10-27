@@ -40,6 +40,12 @@ const requestListener = function (req, res) {
         contentType = "text/html"
         fileName = __dirname + "/Kommandos.html"
     }
+
+    else if (req.url === "/Style.css") {
+        contentType = "text/css"
+        fileName = __dirname + "/Style.css"
+        console.log ("Hier")
+    }
     fs.readFile(fileName)
         .then(contents => {
             res.setHeader("Content-Type", contentType);
